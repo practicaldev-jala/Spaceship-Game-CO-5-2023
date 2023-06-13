@@ -16,10 +16,10 @@ class Spaceship:
         self.rect.x = self.X_POS
         self.rect.y = self.Y_POS
         
-    def draw(self, screen) -> None:
+    def draw(self, screen):
         screen.blit(self.image, self.rect)
     
-    def update(self, user_input) -> None:
+    def update(self, user_input):
         if user_input[pygame.K_LEFT]:
             self.move_left()
         elif user_input[pygame.K_RIGHT]:
@@ -29,20 +29,24 @@ class Spaceship:
         elif user_input[pygame.K_DOWN]:
             self.move_down()
             
-    def move_left(self) -> None:
-        if self.rect.left > 0:
+    def move_left(self):
+        limit = 0 - self.X_OFFSET
+        if self.rect.left > limit:
             self.rect.x -= self.SPEED
+        elif self.rect.left == limit:
+            self.rect.x = SCREEN_WIDTH + self.X_OFFSET
             
-    def move_right(self) -> None:
-        if self.rect.right < SCREEN_WIDTH:
+    def move_right(self):
+        limit = SCREEN_WIDTH + self.X_OFFSET
+        if self.rect.right < limit:
             self.rect.x += self.SPEED
-            
-    def move_up(self) -> None:
+        elif self.rect.right == limit:
+            self.rect.x = 0 - self.X_OFFSET
+
+    def move_up(self):
         if self.rect.y > SCREEN_HEIGHT // 2:
             self.rect.y -= self.SPEED
     
-    def move_down(self) -> None:
+    def move_down(self):
         if self.rect.y < SCREEN_HEIGHT - self.Y_OFFSET:
             self.rect.y += self.SPEED
-
-# Añadir bucle de lados, efecto infinito
