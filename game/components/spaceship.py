@@ -50,3 +50,5 @@ class Spaceship:
     def move_down(self):
         if self.rect.y < SCREEN_HEIGHT - self.Y_OFFSET:
             self.rect.y += self.SPEED
+
+#añadir velocidad dependiente del hilp principal
