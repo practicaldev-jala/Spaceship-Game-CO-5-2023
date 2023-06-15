@@ -7,20 +7,22 @@ class EnemyHandler:
     def __init__(self):
         self.default_enemies = [Ship, Striker, Gladiator]
         self.enemies = []
-        self.enemies.append(Ship())
-        self.enemies.append(Striker())
-        self.enemies.append(Gladiator())
-    
-    def update(self):
+
+    def update(self, bullet_handler):
+        self.add_enemy()
         for enemy in self.enemies:
-            if enemy.is_alive:
-                enemy.update()
-            else:
-                current_index = self.enemies.index(enemy)
-                new_enemy = random.choice(self.default_enemies)
-                del self.enemies[current_index]
-                self.enemies.append(new_enemy())
-                
+            enemy.update(bullet_handler)
+            if not enemy.is_alive:
+                self.remove_enemy(enemy)
+
     def draw(self, screen):
         for enemy in self.enemies:
             enemy.draw(screen)
+    
+    def add_enemy(self):
+        if len(self.enemies) < 2:
+            new_enemy = random.choice(self.default_enemies)
+            self.enemies.append(new_enemy())
+    
+    def remove_enemy(self, enemy):
+        self.enemies.remove(enemy)
