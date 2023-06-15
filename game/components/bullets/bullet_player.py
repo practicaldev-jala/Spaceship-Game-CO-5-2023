@@ -1,25 +1,26 @@
 import pygame
 from game.components.bullets.bullet import Bullet
-from game.utils.constants import BULLET_ENEMY
-from game.utils.constants import SCREEN_HEIGHT
-class BulletEnemy(Bullet):
+from game.utils.constants import BULLET
+
+class BulletPlayer(Bullet):
     WIDTH = 9
     HEIGHT = 32
     SPEED = 20
     
     def __init__(self, center):
-        self.image = BULLET_ENEMY
+        self.image = BULLET
         self.image = pygame.transform.scale(self.image, (self.WIDTH, self.HEIGHT))
         super().__init__(self.image, center)
         
 
-    def update(self, player):
-        self.rect.y += self.SPEED
-        if self.rect.y >= SCREEN_HEIGHT + self.HEIGHT:
+    def update(self, enemies):
+        self.rect.y -= self.SPEED
+        if self.rect.y <= 0 - self.HEIGHT:
             self.deactive()
-        if self.rect.colliderect(player.rect):
-            self.deactive()
-            player.kill()
+        for enemy in enemies:
+            if self.rect.colliderect(enemy.rect):
+                self.deactive()
+                enemy.kill()
         
 #Implementar método morir en player
 #Agregar balas al usuario

@@ -7,6 +7,7 @@ class Striker(Enemy):
     HEIGHT = 60
     SPEED_X = 20
     SPEED_Y = 5
+    SHOOTING_TIME = 10
     def __init__(self):
         self.image = ENEMY_2
         self.image = pygame.transform.scale(self.image, (self.WIDTH, self.HEIGHT))
