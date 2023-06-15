@@ -1,5 +1,5 @@
 import random
-from game.utils.constants import SCREEN_WIDTH
+from game.utils.constants import SCREEN_WIDTH, SCREEN_HEIGHT
 
 class Enemy:
     X_POS_LIST = [50, 100, 150, 200, 250, 300, 350, 400, 450, 500]
@@ -9,7 +9,7 @@ class Enemy:
     LEFT = 'left'
     RIGHT = 'right'
     MOV_X = [LEFT, RIGHT]
-    INTERVAL = 100
+    INTERVAL_LIST = [100, 150, 200, 250]
     
     def __init__(self, image):
         self.image = image
@@ -17,29 +17,30 @@ class Enemy:
         self.rect.x = random.choice(self.X_POS_LIST)
         self.rect.y = self.Y_POS
         self.mov_x = random.choice(self.MOV_X)
+        self.interval = random.choice(self.INTERVAL_LIST)
         self.index = 0
+        self.is_alive = True
 
     def update(self):
         self.rect.y += self.SPEED_Y
+        
+        if self.rect.y >= SCREEN_HEIGHT + self.rect.height:
+            #self.rect.y = 0 - self.rect.height
+            self.is_alive = False
+            
         if self.mov_x == self.LEFT:
             self.rect.x -= self.SPEED_X
-            if self.index > self.INTERVAL or self.rect.x <= 0:
+            if self.index > self.interval or self.rect.x <= 0:
                 self.mov_x = self.RIGHT
                 self.index = 0
+                self.interval = random.choice(self.INTERVAL_LIST)
         else:
             self.rect.x += self.SPEED_X
-            if self.index > self.INTERVAL or self.rect.x >= SCREEN_WIDTH - self.rect.width:
+            if self.index > self.interval or self.rect.x >= SCREEN_WIDTH - self.rect.width:
                 self.mov_x = self.LEFT
                 self.index = 0
+                self.interval = random.choice(self.INTERVAL_LIST)
         self.index += 1
         
     def draw(self, screen):
         screen.blit(self.image, self.rect)
-
-#Agregar un nuevo enemigo
-#Agregarlo como enemy_2
-#El enemigo tiene un comportamiento diferente
-#Puede ser más veloz, el intervalo es más corto
-#Intervalo aleatorio
-#Modificar clase enemy
-#Agregar tercer enemigo
