@@ -18,10 +18,7 @@ class BulletPlayer(Bullet):
         if self.rect.y <= 0 - self.HEIGHT:
             self.deactive()
         for enemy in enemies:
-            if self.rect.colliderect(enemy.rect):
-                self.deactive()
-                enemy.kill()
-        
+            super().update(enemy)
 #Implementar método morir en player
 #Agregar balas al usuario
 #Cada que choque con el enemigo, el enemigo debe desaparecer

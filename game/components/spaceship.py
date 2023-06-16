@@ -12,7 +12,7 @@ class Spaceship:
     
     def __init__(self) -> None:
         self.image = SPACESHIP
-        self.image = pygame.transform.scale(self.image, (40, 60))
+        self.image = pygame.transform.scale(self.image, (self.X_OFFSET, self.Y_OFFSET))
         self.rect  = self.image.get_rect()
         self.rect.x = self.X_POS
         self.rect.y = self.Y_POS
@@ -21,6 +21,7 @@ class Spaceship:
         self.shooting_time = 0
         self.explosion_sprite = 0
         self.can_explode = False
+        self.can_move = True
         
     def draw(self, screen):
         screen.blit(self.image, self.rect)
@@ -30,6 +31,7 @@ class Spaceship:
             self.explode()
     
     def explode(self):
+        self.can_move = False
         self.explosion_sprite += 0.2
         frame = self.get_from_image(EXPLOSION_SHEET_1, int(self.explosion_sprite), 100, 100, 1, (0,0,0))
         self.image = frame
@@ -50,36 +52,40 @@ class Spaceship:
             self.shoot(bullet_handler)
         if user_input[pygame.K_LEFT] or user_input[pygame.K_a]:
             self.move_left()
-        elif user_input[pygame.K_RIGHT] or user_input[pygame.K_d]:
+        if user_input[pygame.K_RIGHT] or user_input[pygame.K_d]:
             self.move_right()
-        elif user_input[pygame.K_UP] or user_input[pygame.K_w]:
+        if user_input[pygame.K_UP] or user_input[pygame.K_w]:
             self.move_up()
-        elif user_input[pygame.K_DOWN] or user_input[pygame.K_s]:
+        if user_input[pygame.K_DOWN] or user_input[pygame.K_s]:
             self.move_down()
         self.wait_to_shoot()
         self.check_is_alive()
             
     def move_left(self):
-        limit = 0 - self.X_OFFSET
-        if self.rect.left > limit:
-            self.rect.x -= self.SPEED
-        elif self.rect.left == limit:
-            self.rect.x = SCREEN_WIDTH + self.X_OFFSET
+        if self.can_move:
+            limit = 0 - self.X_OFFSET
+            if self.rect.left > limit:
+                self.rect.x -= self.SPEED
+            elif self.rect.left == limit:
+                self.rect.x = SCREEN_WIDTH + self.X_OFFSET
             
     def move_right(self):
-        limit = SCREEN_WIDTH + self.X_OFFSET
-        if self.rect.right < limit:
-            self.rect.x += self.SPEED
-        elif self.rect.right == limit:
-            self.rect.x = 0 - self.X_OFFSET
+        if self.can_move:
+            limit = SCREEN_WIDTH + self.X_OFFSET
+            if self.rect.right < limit:
+                self.rect.x += self.SPEED
+            elif self.rect.right == limit:
+                self.rect.x = 0 - self.X_OFFSET
 
     def move_up(self):
-        if self.rect.y > SCREEN_HEIGHT // 2:
-            self.rect.y -= self.SPEED
+        if self.can_move:
+            if self.rect.y > SCREEN_HEIGHT // 2:
+                self.rect.y -= self.SPEED
     
     def move_down(self):
-        if self.rect.y < SCREEN_HEIGHT - self.Y_OFFSET:
-            self.rect.y += self.SPEED
+        if self.can_move:
+            if self.rect.y < SCREEN_HEIGHT - self.Y_OFFSET:
+                self.rect.y += self.SPEED
     
     def wait_to_shoot(self):
         if self.can_shoot == False:
@@ -94,4 +100,16 @@ class Spaceship:
     
     def kill(self):
         self.can_explode = True
+    
+    def reset(self):
+        self.image = pygame.transform.scale(SPACESHIP, (self.X_OFFSET, self.Y_OFFSET))
+        self.rect.x = self.X_POS
+        self.rect.y = self.Y_POS
+        self.is_alive = True
+        self.can_shoot = True
+        self.shooting_time = 0
+        self.explosion_sprite = 0
+        self.can_explode = False
+        self.can_move = True
+        
 #añadir velocidad dependiente del hilp principal

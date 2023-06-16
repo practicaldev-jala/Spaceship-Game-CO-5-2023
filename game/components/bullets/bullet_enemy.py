@@ -17,9 +17,7 @@ class BulletEnemy(Bullet):
         self.rect.y += self.SPEED
         if self.rect.y >= SCREEN_HEIGHT + self.HEIGHT:
             self.deactive()
-        if self.rect.colliderect(player.rect):
-            self.deactive()
-            player.kill()
+        super().update(player)
         
 #Implementar método morir en player
 #Agregar balas al usuario

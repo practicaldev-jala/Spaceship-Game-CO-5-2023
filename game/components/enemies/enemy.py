@@ -25,12 +25,14 @@ class Enemy:
         self.shooting_time = 0
         self.explosion_sprite = 0
         self.can_explode = False
+        self.can_move = True
 
     def check_is_alive(self):
         if self.is_alive and self.can_explode:
             self.explode()
     
     def explode(self):
+        self.can_move = False
         self.explosion_sprite += 0.2
         frame = self.get_from_image(EXPLOSION_SHEET_1, int(self.explosion_sprite), 100, 100, 1, (0,0,0))
         self.image = frame
@@ -58,22 +60,23 @@ class Enemy:
         screen.blit(self.image, self.rect)
     
     def move(self):
-        self.rect.y += self.SPEED_Y
-            
-        if self.mov_x == self.LEFT:
-            self.rect.x -= self.SPEED_X
-            if self.index > self.interval or self.rect.x <= 0:
-                self.mov_x = self.RIGHT
-                self.index = 0
-                self.interval = random.choice(self.INTERVAL_LIST)
-        else:
-            self.rect.x += self.SPEED_X
-            if self.index > self.interval or self.rect.x >= SCREEN_WIDTH - self.rect.width:
-                self.mov_x = self.LEFT
-                self.index = 0
-                self.interval = random.choice(self.INTERVAL_LIST)
-        self.index += 1
-    
+        if self.can_move:
+            self.rect.y += self.SPEED_Y
+                
+            if self.mov_x == self.LEFT:
+                self.rect.x -= self.SPEED_X
+                if self.index > self.interval or self.rect.x <= 0:
+                    self.mov_x = self.RIGHT
+                    self.index = 0
+                    self.interval = random.choice(self.INTERVAL_LIST)
+            else:
+                self.rect.x += self.SPEED_X
+                if self.index > self.interval or self.rect.x >= SCREEN_WIDTH - self.rect.width:
+                    self.mov_x = self.LEFT
+                    self.index = 0
+                    self.interval = random.choice(self.INTERVAL_LIST)
+            self.index += 1
+        
     def kill(self):
         self.can_explode = True
         

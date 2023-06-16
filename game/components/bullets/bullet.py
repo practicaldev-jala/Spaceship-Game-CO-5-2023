@@ -7,8 +7,10 @@ class Bullet:
         self.rect.center = center
         self.is_active = True
         
-    def update(self):
-        pass
+    def update(self, object):
+        if self.rect.colliderect(object.rect):
+                self.deactive()
+                object.kill()
     
     def draw(self, screen):
         screen.blit(self.image, self.rect)
