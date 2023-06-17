@@ -1,6 +1,7 @@
 import pygame
 from game.utils.constants import SPACESHIP
-from game.utils.constants import SCREEN_WIDTH, SCREEN_HEIGHT, BULLET_PLAYER_TYPE, EXPLOSION_SHEET_1
+from game.utils.constants import SCREEN_WIDTH, SCREEN_HEIGHT, BULLET_PLAYER_TYPE, EXPLOSION_SHEET_1, DEFAULT_TYPE
+from game.components.sprite_sheet import SpriteSheet
 
 class Spaceship:
     X_OFFSET = 40
@@ -19,9 +20,13 @@ class Spaceship:
         self.is_alive = True
         self.can_shoot = True
         self.shooting_time = 0
-        self.explosion_sprite = 0
+        self.explosion_sprite_pos = 0
+        self.explosion_sprite = SpriteSheet(EXPLOSION_SHEET_1)
         self.can_explode = False
         self.can_move = True
+        self.power_type = DEFAULT_TYPE
+        self.has_power = False
+        self.power_time = 0
         
     def draw(self, screen):
         screen.blit(self.image, self.rect)
@@ -32,20 +37,12 @@ class Spaceship:
     
     def explode(self):
         self.can_move = False
-        self.explosion_sprite += 0.2
-        frame = self.get_from_image(EXPLOSION_SHEET_1, int(self.explosion_sprite), 100, 100, 1, (0,0,0))
+        self.explosion_sprite_pos += 0.5
+        frame = self.explosion_sprite.get_from_image((int(self.explosion_sprite_pos), int(self.explosion_sprite_pos)), 100, 100, 1, (0,0,0))
         self.image = frame
-        if self.explosion_sprite >= 5:
-            self.explosion_sprite = 0
+        if self.explosion_sprite_pos >= 5:
             self.is_alive = False
             
-    def get_from_image(self, sheet, frame, width, height, scale, colour):
-        image = pygame.Surface((width, height)).convert_alpha()
-        image.blit(sheet, (0, 0), ((frame * width), (frame * height), width, height))
-        image = pygame.transform.scale(image, (width * scale, height * scale))
-        image.set_colorkey(colour)
-        
-        return image
     
     def update(self, user_input, mouse_input, bullet_handler):
         if user_input[pygame.K_SPACE] or mouse_input[0]:
@@ -86,7 +83,12 @@ class Spaceship:
         if self.can_move:
             if self.rect.y < SCREEN_HEIGHT - self.Y_OFFSET:
                 self.rect.y += self.SPEED
-    
+                
+    def check_collision(self, object):
+        if self.rect.colliderect(object.rect):
+                self.kill()
+                object.kill()
+                
     def wait_to_shoot(self):
         if self.can_shoot == False:
             self.shooting_time += 1
@@ -94,7 +96,7 @@ class Spaceship:
                 self.can_shoot = True
     
     def shoot(self, bullet_handler):
-        if self.can_shoot:
+        if self.can_shoot and not self.can_explode:
             bullet_handler.add_bullet(BULLET_PLAYER_TYPE, self.rect.center)
             self.can_shoot = False
     
@@ -108,8 +110,16 @@ class Spaceship:
         self.is_alive = True
         self.can_shoot = True
         self.shooting_time = 0
-        self.explosion_sprite = 0
+        self.explosion_sprite_pos = 0
         self.can_explode = False
         self.can_move = True
         
+    def set_power_image(self, image):
+        self.image = image
+        self.image = pygame.transform.scale(self.image, (self.X_OFFSET, self.Y_OFFSET))
+
+    def set_default_image(self):
+        self.image = SPACESHIP
+        self.image = pygame.transform.scale(self.image, (self.X_OFFSET, self.Y_OFFSET))
+
 #añadir velocidad dependiente del hilp principal

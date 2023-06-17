@@ -1,7 +1,7 @@
 import pygame
 from game.components.bullets.bullet import Bullet
-from game.utils.constants import BULLET_ENEMY
-from game.utils.constants import SCREEN_HEIGHT
+from game.utils.constants import BULLET_ENEMY, SCREEN_HEIGHT, SHIELD_TYPE
+
 class BulletEnemy(Bullet):
     WIDTH = 9
     HEIGHT = 32
@@ -17,7 +17,9 @@ class BulletEnemy(Bullet):
         self.rect.y += self.SPEED
         if self.rect.y >= SCREEN_HEIGHT + self.HEIGHT:
             self.deactive()
-        super().update(player)
+        
+        if not player.power_type == SHIELD_TYPE:
+            super().update(player)
         
 #Implementar método morir en player
 #Agregar balas al usuario

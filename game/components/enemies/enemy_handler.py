@@ -8,15 +8,22 @@ class EnemyHandler:
         self.default_enemies = [Ship, Striker, Gladiator]
         self.enemies = []
         self.number_enemy_destroyed = 0
+        self.destroyed_enemies = {}
 
-    def update(self, bullet_handler):
+    def update(self, player, bullet_handler):
         self.add_enemy()
         for enemy in self.enemies:
             enemy.update(bullet_handler)
+            player.check_collision(enemy)
+            if enemy.is_destroyed:
+                try:
+                    self.number_enemy_destroyed += 1
+                    self.destroyed_enemies[str(type(enemy).__name__)] += 1 
+                except KeyError:
+                    self.destroyed_enemies[str(type(enemy).__name__)] = 1
             if not enemy.is_alive:
-                self.number_enemy_destroyed += 1
                 self.remove_enemy(enemy)
-
+    
     def draw(self, screen):
         for enemy in self.enemies:
             enemy.draw(screen)
@@ -32,3 +39,4 @@ class EnemyHandler:
     def reset(self):
         self.enemies = []
         self.number_enemy_destroyed = 0
+        self.destroyed_enemies = {}

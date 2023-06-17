@@ -1,6 +1,7 @@
 import pygame
 import random
 from game.utils.constants import SCREEN_WIDTH, SCREEN_HEIGHT, BULLET_ENEMY_TYPE, EXPLOSION_SHEET_1
+from game.components.sprite_sheet import SpriteSheet
 
 class Enemy:
     X_POS_LIST = [50, 100, 150, 200, 250, 300, 350, 400, 450, 500]
@@ -22,8 +23,10 @@ class Enemy:
         self.interval = random.choice(self.INTERVAL_LIST)
         self.index = 0
         self.is_alive = True
+        self.is_destroyed = False
         self.shooting_time = 0
-        self.explosion_sprite = 0
+        self.explosion_sprite_pos = 0
+        self.explosion_sprite = SpriteSheet(EXPLOSION_SHEET_1)
         self.can_explode = False
         self.can_move = True
 
@@ -33,21 +36,14 @@ class Enemy:
     
     def explode(self):
         self.can_move = False
-        self.explosion_sprite += 0.2
-        frame = self.get_from_image(EXPLOSION_SHEET_1, int(self.explosion_sprite), 100, 100, 1, (0,0,0))
+        self.explosion_sprite_pos += 0.5
+        frame = self.explosion_sprite.get_from_image((int(self.explosion_sprite_pos), int(self.explosion_sprite_pos)), 100, 100, 1, (0,0,0))
         self.image = frame
-        if self.explosion_sprite >= 5:
-            self.explosion_sprite = 0
+        if self.explosion_sprite_pos >= 5:
             self.is_alive = False
+            self.is_destroyed = True
+            self.explosion_sprite_pos = 0
             
-    def get_from_image(self, sheet, frame, width, height, scale, colour):
-        image = pygame.Surface((width, height)).convert_alpha()
-        image.blit(sheet, (0, 0), ((frame * width), (frame * height), width, height))
-        image = pygame.transform.scale(image, (width * scale, height * scale))
-        image.set_colorkey(colour)
-        
-        return image
-    
     def update(self, bullet_handler):
         if self.rect.y >= SCREEN_HEIGHT + self.rect.height:
             self.is_alive = False
@@ -79,6 +75,7 @@ class Enemy:
         
     def kill(self):
         self.can_explode = True
+        self.explosion_sprite_pos = 0
         
     def shoot(self, bullet_handler):
         if self.shooting_time % self.SHOOTING_TIME == 0:
