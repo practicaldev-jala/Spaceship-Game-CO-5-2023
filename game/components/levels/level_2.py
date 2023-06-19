@@ -14,7 +14,7 @@ class Level2(Level):
     DEFAULT_ENEMIES = [Gladiator]
     POWER_LIMIT = 3
     POWER_SPAWN_DELAY = random.randint(1000, 1500)
-    DEFAULT_POWERS = [Shield, Destructor, Heart]
+    DEFAULT_POWERS = [Shield, Heart]
     BACKGROUND = BG_LEVEL_2
     def __init__(self):
         super().__init__()

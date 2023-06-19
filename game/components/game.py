@@ -23,14 +23,15 @@ class Game:
         self.started_at = 0
         self.finished_at = 0
         self.current_time = 0
+        self.mixer = pygame.mixer
+        self.mixer.init()
     
     def run(self):
         # Game loop: events - update - draw
         self.running = True
-        background_music = pygame.mixer.Sound(MUSIC_SOUND)
-        background_music.set_volume(0.2)
-        pygame.mixer.init()
-        pygame.mixer.Channel(0).play(background_music)
+        background_music = self.mixer.Sound(MUSIC_SOUND)
+        background_music.set_volume(0.1)
+        self.mixer.Channel(0).play(background_music)
         while self.running:
             self.events()
             self.update()
@@ -76,6 +77,7 @@ class Game:
             self.draw_lives()
             self.draw_timer()
             self.draw_power_time()
+            self.draw_level()
         else:
             self.draw_menu()
         pygame.display.update()
@@ -84,6 +86,10 @@ class Game:
     def draw_score(self):
         score, score_rect = text_utils.get_message(f'Score: {self.dashboard.get_score()}', 20, WHITE_COLOR, 1000, 40)
         self.screen.blit(score, score_rect)
+    
+    def draw_level(self):
+        level, level_rect = text_utils.get_message(f'Level {self.level_handler.level_counter}', 20, WHITE_COLOR, height=60)
+        self.screen.blit(level, level_rect)
     
     def draw_lives(self):
         health_width = 60
