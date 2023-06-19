@@ -1,7 +1,8 @@
 import pygame
 import random
-from game.utils.constants import SCREEN_WIDTH, SCREEN_HEIGHT, BULLET_ENEMY_TYPE, EXPLOSION_SHEET_1
+from game.utils.constants import SCREEN_WIDTH, SCREEN_HEIGHT, BULLET_ENEMY_TYPE, EXPLOSION_SHEET_1, WHITE_COLOR
 from game.components.sprite_sheet import SpriteSheet
+from game.components import text_utils
 
 class Enemy:
     X_POS_LIST = [50, 100, 150, 200, 250, 300, 350, 400, 450, 500]
@@ -60,8 +61,15 @@ class Enemy:
         self.check_is_alive()
         
     def draw(self, screen):
+        self.draw_lives(screen)
         screen.blit(self.image, self.rect)
     
+    def draw_lives(self, screen):
+        if self.lives > 0:
+            pos_x = self.rect.x + (self.rect.width // 2)
+            lives, lives_rect = text_utils.get_message(f'{self.lives}', 20, WHITE_COLOR, pos_x, self.rect.y - 5, antialias=False)
+            screen.blit(lives, lives_rect)
+        
     def move(self):
         if self.can_move:
             self.rect.y += self.speed_y // 2

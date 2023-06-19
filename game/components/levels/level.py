@@ -15,7 +15,7 @@ class Level:
     DEFAULT_ENEMIES = [Ship]
     POWER_LIMIT = 1
     POWER_SPAWN_DELAY = random.randint(3000, 7000)
-    DEFAULT_POWERS = [Shield, Destructor, Heart]
+    DEFAULT_POWERS = [Shield]
     BACKGROUND = BG_LEVEL_1
     
     def __init__(self):

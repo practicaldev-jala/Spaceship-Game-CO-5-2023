@@ -15,6 +15,7 @@ class LevelHandler:
     def __init__(self, player):
         self.player = player
         self.level = self.DEFAULT_LEVEL()
+        self.level_counter = 0
         self.current_score = 0
         self.enemy_handler = EnemyHandler(self.level.EMENY_LIMIT, self.level.ENEMY_SPAWN_DELAY, self.level.DEFAULT_ENEMIES)
         self.bullet_handler = BulletHandler()
@@ -29,20 +30,27 @@ class LevelHandler:
     
     def update(self, current_score):
         self.set_current_time(current_score)
-        if current_score >= 10:
+        if current_score == 0 and not self.level_counter == 1:
+            self.level = Level1()
+            self.level_counter = 1
+            self.set_level_config(self.level)
+        elif current_score == 5 and not self.level_counter == 2:
             self.level = Level2()
+            self.level_counter = 2
             self.set_level_config(self.level)
-        elif current_score >= 20:
+        elif current_score == 10 and not self.level_counter == 3:
             self.level = Level3()
+            self.level_counter = 3
             self.set_level_config(self.level)
-        elif current_score >= 30:
+        elif current_score == 20 and not self.level_counter == 4:
             self.level = Level4()
+            self.level_counter = 4
+            self.set_level_config(self.level)
+        elif current_score == 30 and not self.level_counter == 5:
+            self.level = Level5()
+            self.level_counter = 5
             self.set_level_config(self.level)
         
-        elif current_score >= 40:
-            self.level = Level5()
-            self.set_level_config(self.level)
-            
             
         self.enemy_handler.update(self.player, self.bullet_handler, self.level.game_speed)
         self.bullet_handler.update(self.player, self.enemy_handler.enemies)

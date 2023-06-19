@@ -67,7 +67,7 @@ BULLET_BOSS_TYPE = 'boss'
 
 #BACKGROUND LEVELS
 
-BG_LEVEL_1 = pygame.image.load(os.path.join(IMG_DIR, 'Levels/Space_3.png'))
+BG_LEVEL_1 = pygame.image.load(os.path.join(IMG_DIR, 'Levels/Space_1.png'))
 BG_LEVEL_2 = pygame.image.load(os.path.join(IMG_DIR, 'Levels/Space_2.png'))
 BG_LEVEL_3 = pygame.image.load(os.path.join(IMG_DIR, 'Levels/Space_3.png'))
 BG_LEVEL_4 = pygame.image.load(os.path.join(IMG_DIR, 'Levels/Space_4.png'))
