@@ -1,15 +1,15 @@
 import pygame
 from game.components.bullets.bullet import Bullet
-from game.utils.constants import BULLET_ENEMY, SCREEN_HEIGHT, SHIELD_TYPE
+from game.utils.constants import BULLET_ENEMY, SCREEN_HEIGHT, SHIELD_TYPE, DESTRUCTOR_TYPE
 
 class BulletEnemy(Bullet):
     WIDTH = 9
     HEIGHT = 32
     SPEED = 20
-    
+    BULLET_IMAGE = BULLET_ENEMY
     def __init__(self, center):
-        self.image = BULLET_ENEMY
-        self.image = pygame.transform.scale(self.image, (self.WIDTH, self.HEIGHT))
+        self.image = self.BULLET_IMAGE
+        self.image = pygame.transform.scale(self.image, (self.WIDTH, self.HEIGHT)).convert_alpha()
         super().__init__(self.image, center)
         
 
@@ -18,7 +18,13 @@ class BulletEnemy(Bullet):
         if self.rect.y >= SCREEN_HEIGHT + self.HEIGHT:
             self.deactive()
         
-        if not player.power_type == SHIELD_TYPE:
+        if player.power_type == SHIELD_TYPE and player.has_power:
+            if self.rect.colliderect(player.rect):
+                self.deactive()
+        elif player.power_type == DESTRUCTOR_TYPE and player.has_power:
+            if self.rect.colliderect(player.rect):
+                self.deactive()
+        else:
             super().update(player)
         
 #Implementar método morir en player

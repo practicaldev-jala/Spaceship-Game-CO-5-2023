@@ -1,19 +1,20 @@
+import pygame
 import random
-from game.components.enemies.ship import Ship
-from game.components.enemies.striker import Striker
-from game.components.enemies.gladiator import Gladiator
 
 class EnemyHandler:
-    def __init__(self):
-        self.default_enemies = [Ship, Striker, Gladiator]
+    def __init__(self, enemy_limit, spawn_delay, default_enemies):
+        self.default_enemies = default_enemies
         self.enemies = []
         self.number_enemy_destroyed = 0
         self.destroyed_enemies = {}
+        self.enemy_limit = enemy_limit
+        self.spawn_delay = spawn_delay
+        self.when_appears = spawn_delay
 
-    def update(self, player, bullet_handler):
+    def update(self, player, bullet_handler, speed):
         self.add_enemy()
         for enemy in self.enemies:
-            enemy.update(bullet_handler)
+            enemy.update(bullet_handler, speed)
             player.check_collision(enemy)
             if enemy.is_destroyed:
                 try:
@@ -24,14 +25,21 @@ class EnemyHandler:
             if not enemy.is_alive:
                 self.remove_enemy(enemy)
     
+    def set_new_level(self, enemy_limit, spawn_delay, default_enemies):
+        self.enemy_limit = enemy_limit
+        self.spawn_delay = spawn_delay
+        self.default_enemies = default_enemies
+        
     def draw(self, screen):
         for enemy in self.enemies:
             enemy.draw(screen)
     
     def add_enemy(self):
-        if len(self.enemies) < 4:
+        current_time = pygame.time.get_ticks()
+        if len(self.enemies) < self.enemy_limit and current_time >= self.when_appears:
             new_enemy = random.choice(self.default_enemies)
             self.enemies.append(new_enemy())
+            self.when_appears += self.spawn_delay
     
     def remove_enemy(self, enemy):
         self.enemies.remove(enemy)

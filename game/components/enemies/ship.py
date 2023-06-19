@@ -7,5 +7,5 @@ class Ship(Enemy):
     HEIGHT = 60
     def __init__(self):
         self.image = ENEMY_1
-        self.image = pygame.transform.scale(self.image, (self.WIDTH, self.HEIGHT))
+        self.image = pygame.transform.scale(self.image, (self.WIDTH, self.HEIGHT)).convert_alpha()
         super().__init__(self.image)

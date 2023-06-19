@@ -1,6 +1,8 @@
-from game.utils.constants import BULLET_ENEMY_TYPE, BULLET_PLAYER_TYPE
+import pygame
+from game.utils.constants import BULLET_ENEMY_TYPE, BULLET_PLAYER_TYPE, BULLET_BOSS_TYPE, SHOOT_SOUND
 from game.components.bullets.bullet_enemy import  BulletEnemy
 from game.components.bullets.bullet_player import BulletPlayer
+from game.components.bullets.bullet_boss import BulletBoss
 
 class BulletHandler:
     def __init__(self):
@@ -11,7 +13,7 @@ class BulletHandler:
             if not bullet.is_active:
                 self.remove_bullet(bullet)
             elif type(bullet) == BulletPlayer:
-                bullet.update(enemies)
+                bullet.update(enemies, self.bullets)
             else:
                 bullet.update(player)
 
@@ -24,6 +26,11 @@ class BulletHandler:
             self.bullets.append(BulletEnemy(center))
         elif type == BULLET_PLAYER_TYPE:
             self.bullets.append(BulletPlayer(center))
+        elif type == BULLET_BOSS_TYPE:
+            self.bullets.append(BulletBoss(center))
+        pygame.mixer.music.load(SHOOT_SOUND)
+        pygame.mixer.music.set_volume(0.2)
+        pygame.mixer.music.play()
             
     def remove_bullet(self, enemy):
         self.bullets.remove(enemy)
