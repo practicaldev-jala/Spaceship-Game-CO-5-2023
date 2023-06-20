@@ -21,6 +21,7 @@ This an interesting game where you're the last warrior in the space, don't let y
 - Data Dashboard
 - Level Handler (5 Levels)
 - Final Level (Boss Enemy)
+- Enemy lives Tag
 - New Powers (Destruction, Health)
 - Bullet Collision
 - Player and enemies lives
