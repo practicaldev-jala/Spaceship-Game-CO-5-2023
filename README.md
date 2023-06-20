@@ -90,10 +90,8 @@ This level contains the next configuration:
 - DEFAULT POWERS -> Shield, Destructor and Heart
 
 ## Final Level (Boss Enemy)
+<img src="https://github.com/practicaldev-jala/Spaceship-Game-CO-5-2023/blob/main/game/assets/Enemy/enemy_final.png?raw=true" width="150" height="200" />
 This Enemy dies with 30 hits and has a different movement
-
-![Evil Cat](https://github.com/practicaldev-jala/Spaceship-Game-CO-5-2023/blob/main/game/assets/Enemy/enemy_final.png?raw=true)
-
 ## Powers (Shield, Destruction, Health)
 
 ### Shield
@@ -101,12 +99,10 @@ This Enemy dies with 30 hits and has a different movement
 Makes player inmortal by random seconds
 
 ### Destructor
-
-![Destructor](https://github.com/practicaldev-jala/Spaceship-Game-CO-5-2023/blob/main/game/assets/Other/fire.png?raw=true)
-Allows player to destroy bullets and enemies just touching them.
+<img src="https://github.com/practicaldev-jala/Spaceship-Game-CO-5-2023/blob/main/game/assets/Other/fire.png?raw=true" width="100" height="200" />
 
 ### Heart
-![Heart](https://github.com/practicaldev-jala/Spaceship-Game-CO-5-2023/blob/main/game/assets/Other/heart.png?raw=true)
+<img src="https://github.com/practicaldev-jala/Spaceship-Game-CO-5-2023/blob/main/game/assets/Other/heart.png?raw=true" width="200" height="200" />
 Gives player health.
 
 ## Bullet Collision
